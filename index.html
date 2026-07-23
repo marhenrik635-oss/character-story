@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAMP Character Story Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#f8fafc] text-slate-900 antialiased min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto w-full">
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs font-medium text-slate-800 mb-3">
+                <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Anti-AI Detection System Active
+            </div>
+            <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">GTA SAMP CS Generator</h1>
+            <p class="mt-2 text-sm text-slate-500 text-pretty">Generate high-quality, humanized, and undetected Character Stories for roleplay applications.</p>
+        </header>
+
+        <!-- Form Card (Shadcn-like) -->
+        <main class="bg-white rounded-xl border border-slate-200/80 shadow-sm p-6 sm:p-8">
+            <form id="cs-form" class="space-y-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Character Name (IC) -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Character Name (IC)</label>
+                        <input type="text" id="ic-name" required placeholder="e.g. Lorenzo Marino" class="w-full bg-white border border-slate-200 hover:border-slate-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 transition-all">
+                    </div>
+
+                    <!-- Age -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Age</label>
+                        <input type="number" id="age" required min="15" max="90" placeholder="e.g. 25" class="w-full bg-white border border-slate-200 hover:border-slate-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 transition-all">
+                    </div>
+
+                    <!-- Date of Birth -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Date of Birth</label>
+                        <input type="date" id="dob" required class="w-full bg-white border border-slate-200 hover:border-slate-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 transition-all">
+                    </div>
+
+                    <!-- Place of Birth -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Place of Birth</label>
+                        <input type="text" id="pob" required placeholder="e.g. Naples, Italy" class="w-full bg-white border border-slate-200 hover:border-slate-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 transition-all">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
+                    <!-- Language Selection -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Story Language</label>
+                        <div class="relative">
+                            <select id="language" class="w-full bg-white border border-slate-200 hover:border-slate-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 transition-all appearance-none cursor-pointer">
+                                <option value="indonesian">🇮🇩 Indonesian</option>
+                                <option value="english">🇺🇸 English</option>
+                                <option value="italian">🇮🇹 Italian</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Character Path (Vibe) -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Story Path (Vibe)</label>
+                        <div class="relative">
+                            <select id="vibe" class="w-full bg-white border border-slate-200 hover:border-slate-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 transition-all appearance-none cursor-pointer">
+                                <option value="good">😇 Good Guy / Honest Citizen</option>
+                                <option value="bad">😈 Bad Guy / Underworld / Criminal</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profession -->
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Target Profession / Goal in Los Santos</label>
+                    <input type="text" id="job" required placeholder="e.g. Mechanic / Taxi Driver / Mafia Associate" class="w-full bg-white border border-slate-200 hover:border-slate-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 transition-all">
+                </div>
+
+                <!-- Plot Elements -->
+                <div class="space-y-4 pt-4 border-t border-slate-100">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Core Plot (Alur Cerita)</label>
+                        <textarea id="plot" required placeholder="Describe his background, why he moved to Los Santos, key struggles..." class="w-full bg-white border border-slate-200 hover:border-slate-300 rounded-lg p-3.5 text-sm h-24 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-all resize-none"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Ending of the Story</label>
+                        <textarea id="ending" required placeholder="Where is he now? What is he planning to do in Los Santos?" class="w-full bg-white border border-slate-200 hover:border-slate-300 rounded-lg p-3.5 text-sm h-24 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-all resize-none"></textarea>
+                    </div>
+                </div>
+
+                <!-- Generate Button -->
+                <button type="submit" id="submit-btn" class="w-full bg-slate-950 hover:bg-slate-900 text-white font-medium text-sm py-3 px-4 rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    Generate Character Story
+                </button>
+            </form>
+
+            <!-- Loading Indicator -->
+            <div id="loading" class="hidden flex flex-col items-center justify-center py-10 space-y-4">
+                <div class="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900"></div>
+                <p class="text-xs text-slate-500 font-medium">Baking your story using humanization matrices...</p>
+            </div>
+
+            <!-- Output Container -->
+            <div id="output-container" class="hidden opacity-0 transition-all duration-300 mt-8 border-t border-slate-200/60 pt-6">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Generated Character Story</span>
+                    <button onclick="copyStory()" id="copy-btn" class="text-xs font-medium text-slate-600 hover:text-slate-900 flex items-center gap-1.5 px-2.5 py-1.5 rounded-md hover:bg-slate-100 transition-colors border border-slate-200/50">
+                        <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                        Copy Story
+                    </button>
+                </div>
+                <div id="word-count" class="text-xs font-semibold text-emerald-600 mb-3">Word Count: 0 words (Minimum: 300 words)</div>
+                <div id="output-text" class="w-full font-serif text-sm leading-relaxed p-5 bg-slate-50 border rounded-lg border-slate-200/80 text-slate-800 whitespace-pre-line select-text"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const form = document.getElementById('cs-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const loading = document.getElementById('loading');
+        const outputContainer = document.getElementById('output-container');
+        const outputText = document.getElementById('output-text');
+        const wordCountDiv = document.getElementById('word-count');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Set loading state
+            form.classList.add('hidden');
+            loading.classList.remove('hidden');
+            outputContainer.classList.add('hidden', 'opacity-0');
+
+            const icName = document.getElementById('ic-name').value;
+            const age = document.getElementById('age').value;
+            const dob = document.getElementById('dob').value;
+            const pob = document.getElementById('pob').value;
+            const language = document.getElementById('language').value;
+            const vibe = document.getElementById('vibe').value;
+            const job = document.getElementById('job').value;
+            const plot = document.getElementById('plot').value;
+            const ending = document.getElementById('ending').value;
+
+            // Strict humanized prompting to evade AI detectors
+            const prompt = `Write a character story for GTA SAMP Roleplay in ${language} language.
+The character profile:
+- Name: ${icName}
+- Age: ${age}
+- Date of birth: ${dob}
+- Place of birth: ${pob}
+- Vibe / Alignment: ${vibe === 'good' ? 'Honest citizen, law-abiding, struggling but trying to be clean' : 'Edgy, crime-linked, lowlife, street criminal, or mobster associate'}
+- Target Job: ${job}
+
+Main plot elements to follow:
+${plot}
+
+Ending details:
+${ending}
+
+CRITICAL REQUIREMENT (FOR ROLEPLAY ACCEPTANCE):
+1. Must be at least 300-400 words.
+2. Structure the story into 3-4 natural paragraphs (Childhood/Early Life, Decision to move, Life in Los Santos).
+3. Do not use overly perfect academic language. Write with natural flow, minor colloquial phrasing, and dynamic syntax lengths to bypass AI detectors.
+4. Output only the story narrative, no chatty introductions, no warnings, no prefix, and no metadata format headers. Just the story.`;
+
+            try {
+                // Call 9router endpoint directly via client-side fetch (or proxy if CORS issue occurs, but standard fallback)
+                const response = await fetch('https://rnrbmqc.abc-tunnel.us/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer sk-dccd02cc8ccf53e8-zqx07k-0f0bc410',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'cf/@cf/meta/llama-3.1-8b-instruct-fp8-fast',
+                        messages: [
+                            {
+                                role: 'system',
+                                content: 'You are an elite, natural human roleplay writer. You write character stories that read exactly like they were written by Indonesian/English SAMP gamers. Avoid generic corporate AI words like "testament", "delve", "pivotal", "vibrant", "beacon", "furthermore".'
+                            },
+                            {
+                                role: 'user',
+                                content: prompt
+                            }
+                        ],
+                        temperature: 0.85
+                    })
+                });
+
+                const data = await response.json();
+                const story = data.choices[0].message.content.trim();
+                
+                // Count words
+                const words = story.split(/\s+/).filter(w => w.length > 0).length;
+
+                outputText.textContent = story;
+                wordCountDiv.textContent = `Word Count: ${words} words (Minimum 300 words)`;
+                
+                if (words >= 300) {
+                    wordCountDiv.className = "text-xs font-semibold text-emerald-600 mb-3";
+                } else {
+                    wordCountDiv.className = "text-xs font-semibold text-amber-600 mb-3";
+                }
+
+                loading.classList.add('hidden');
+                form.classList.remove('hidden');
+                outputContainer.classList.remove('hidden');
+                setTimeout(() => {
+                    outputContainer.classList.remove('opacity-0');
+                    outputContainer.classList.add('opacity-100');
+                }, 10);
+
+            } catch (err) {
+                alert('Generation failed: ' + err.message);
+                loading.classList.add('hidden');
+                form.classList.remove('hidden');
+            }
+        });
+
+        function copyStory() {
+            const text = outputText.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById('copy-btn');
+                btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i> Copied!';
+                lucide.createIcons();
+                setTimeout(() => {
+                    btn.innerHTML = '<i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Story';
+                    lucide.createIcons();
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+</html>
