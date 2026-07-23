@@ -197,7 +197,7 @@ CRITICAL REQUIREMENT (FOR ROLEPLAY ACCEPTANCE):
                 const story = data.story;
                 
                 // Count words
-                const words = story.split(/\\s+/).filter(w => w.length > 0).length;
+                const words = story.trim().split(/\s+/).filter(w => w.length > 0).length;
 
                 outputText.textContent = story;
                 wordCountDiv.textContent = `Word Count: ${words} words (Minimum 300 words)`;
