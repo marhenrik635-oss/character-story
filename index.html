@@ -127,7 +127,7 @@
             pointer-events: all;
         }
 
-        .modal-card {
+        .modal-card { position: relative;
             background: white;
             border-radius: 1.5rem;
             border: 1px solid rgba(0,0,0,0.06);
@@ -442,11 +442,6 @@
         const modalWordCount = document.getElementById('modal-word-count');
         const modalOutputText = document.getElementById('modal-output-text');
 
-        // Select custom styling helper
-        document.querySelectorAll('select').forEach(sel => {
-            sel.classList.add('select-custom');
-        });
-
         // Close modal on overlay click
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
@@ -564,8 +559,6 @@ CRITICAL REQUIREMENT (FOR ROLEPLAY ACCEPTANCE):
             });
         }
 
-        // Trigger initial icon render
-        lucide.createIcons();
     </script>
 </body>
 </html>
