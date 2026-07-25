@@ -87,6 +87,21 @@
                 }
             }
         }
+        function copyStoryFromOutput() {
+            const text = document.getElementById("output-text").textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById("copy-output-btn");
+                const origHTML = btn.innerHTML;
+                btn.innerHTML = "<i data-lucide=\"check\" class=\"w-3.5 h-3.5 text-emerald-500\"></i> Copied!";
+                lucide.createIcons();
+                setTimeout(() => {
+                    btn.innerHTML = origHTML;
+                    lucide.createIcons();
+                }, 1500);
+            }).catch(() => {
+                alert("Failed to copy");
+            });
+        }
     </script>
     <style>
         * { -webkit-tap-highlight-color: transparent; }
@@ -201,11 +216,6 @@
         ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.15); }
 
-        /* Output with scrollbar inside modal */
-        .output-scroll {
-            max-height: 300px;
-            overflow-y: auto;
-        }
 
         @media (prefers-reduced-motion: reduce) {
             .animate-fade-in, .animate-fade-in-up, .animate-scale-in, .animate-slide-up {
@@ -333,6 +343,19 @@
                 </div>
             </main>
 
+            <!-- Output Container -->
+            <div id="output-container" class="hidden mt-8 border-t border-slate-200/60 pt-6">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Generated Character Story</span>
+                    <button onclick="copyStoryFromOutput()" id="copy-output-btn" class="text-xs font-medium text-slate-600 hover:text-slate-900 flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg hover:bg-slate-100 transition-colors border border-slate-200/50">
+                        <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                        Copy Story
+                    </button>
+                </div>
+                <div id="word-count" class="text-xs font-semibold text-emerald-600 mb-3"></div>
+                <div id="output-text" class="font-serif text-sm leading-relaxed p-5 bg-slate-50 border border-slate-200/60 rounded-xl text-slate-800 whitespace-pre-line select-text"></div>
+            </div>
+
             <!-- Footer -->
             <footer class="text-center mt-8 text-[10px] text-slate-400 animate-fade-in" style="animation-delay:0.5s">
                 Powered by <a href="https://github.com/marhenrik635-oss" target="_blank" rel="noopener noreferrer" class="text-brand-500 hover:text-brand-600 transition-colors font-medium">VitalWounds</a> &bull; Stories generated via encrypted VPS API
@@ -361,8 +384,6 @@
                 <p class="text-xs text-slate-500 mt-1 animate-slide-up" style="animation-delay:0.45s">Your character story is ready for review.</p>
             </div>
 
-            <!-- Word Count -->
-            <div id="modal-word-count" class="text-center mb-4 animate-slide-up" style="animation-delay:0.5s"></div>
 
             <!-- Warning Notice (existing in original HTML) -->
             <div class="p-4 bg-amber-50 border border-amber-200/60 rounded-xl text-sm animate-slide-up" style="animation-delay:0.55s">
@@ -392,28 +413,11 @@
                 </div>
             </div>
 
-            <!-- Story Preview (scrollable) -->
-            <div class="mt-5 border-t border-slate-100 pt-5 animate-slide-up" style="animation-delay:0.6s">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Story Preview</span>
-                    <button onclick="copyStory()" id="copy-modal-btn" class="text-xs font-medium text-slate-600 hover:text-slate-900 flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg hover:bg-slate-100 transition-colors border border-slate-200/50">
-                        <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-                        Copy
-                    </button>
-                </div>
-                <div class="output-scroll">
-                    <div id="modal-output-text" class="font-serif text-sm leading-relaxed p-4 bg-slate-50 border border-slate-200/60 rounded-xl text-slate-800 whitespace-pre-line select-text"></div>
-                </div>
-            </div>
-
             <!-- Actions -->
             <div class="flex gap-3 mt-6 animate-slide-up" style="animation-delay:0.65s">
-                <button onclick="closeModal()" class="flex-1 btn-press px-4 py-2.5 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 text-sm font-medium rounded-xl transition-all">
-                    Close
-                </button>
-                <button onclick="copyStory()" id="copy-action-btn" class="flex-1 btn-press px-4 py-2.5 bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white text-sm font-medium rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm">
-                    <i data-lucide="copy" class="w-4 h-4"></i>
-                    Copy Story
+                <button onclick="closeModal()" class="flex-1 btn-press px-4 py-2.5 bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white text-sm font-medium rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm">
+                    <i data-lucide="check" class="w-4 h-4"></i>
+                    Lanjutkan
                 </button>
             </div>
         </div>
@@ -439,9 +443,7 @@
         const submitBtn = document.getElementById('submit-btn');
         const loading = document.getElementById('loading');
         const modal = document.getElementById('success-modal');
-        const modalWordCount = document.getElementById('modal-word-count');
-        const modalOutputText = document.getElementById('modal-output-text');
-
+                
         // Close modal on overlay click
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
@@ -515,10 +517,16 @@ CRITICAL REQUIREMENT (FOR ROLEPLAY ACCEPTANCE):
                 const words = story.trim().split(/\s+/).filter(w => w.length > 0).length;
 
                 // Populate modal
-                modalOutputText.textContent = story;
+                document.getElementById("output-text").textContent = story;
 
                 const isEnough = words >= 300;
-                modalWordCount.innerHTML = `
+                document.getElementById("word-count").textContent = "Word Count: " + words + " words (Minimum: 300 words)";
+                document.getElementById("word-count").className = isEnough
+                    ? "text-xs font-semibold text-emerald-600 mb-3"
+                    : "text-xs font-semibold text-amber-600 mb-3";
+                document.getElementById("output-container").classList.remove("hidden");
+
+                const isEnough2 = `
                     <span class="inline-flex items-center gap-1.5 text-xs font-semibold ${isEnough ? 'text-emerald-600' : 'text-amber-600'} bg-${isEnough ? 'emerald' : 'amber'}-50 px-3 py-1 rounded-full border border-${isEnough ? 'emerald' : 'amber'}-200/60">
                         <span class="flex h-1.5 w-1.5 rounded-full ${isEnough ? 'bg-emerald-500' : 'bg-amber-500'}"></span>
                         ${words} words ${isEnough ? '✓ Minimum met' : '(Minimum: 300 words)'}
@@ -541,18 +549,7 @@ CRITICAL REQUIREMENT (FOR ROLEPLAY ACCEPTANCE):
             }
         });
 
-        function copyStory() {
-            const text = modalOutputText.textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                // Update all copy buttons
-                document.querySelectorAll('#copy-modal-btn, #copy-action-btn').forEach(btn => {
-                    const origHTML = btn.innerHTML;
-                    btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500"></i> Copied!';
-                    lucide.createIcons();
-                    setTimeout(() => {
-                        btn.innerHTML = origHTML;
-                        lucide.createIcons();
-                    }, 1500);
+ 1500);
                 });
             }).catch(() => {
                 alert('Failed to copy');
