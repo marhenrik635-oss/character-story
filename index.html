@@ -337,7 +337,7 @@
                         <div class="h-10 w-10 rounded-full border-[3px] border-slate-100 border-t-brand-500 animate-spin"></div>
                     </div>
                     <div class="text-center">
-                        <p class="text-sm text-slate-700 font-medium">Baking your story using humanization matrices...</p>
+                        <p class="text-sm text-slate-700 font-medium loading-text-dynamic">Baking your story using humanization matrices...</p>
                         <p class="text-xs text-slate-400 mt-1">This may take a few seconds</p>
                     </div>
                 </div>
@@ -423,19 +423,35 @@
         </div>
     </div>
 
-    <script>
-        // Lenis
-        {
-            const lenis = new Lenis({
-                smooth: !window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-                duration: 1.2,
-                easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                wheelMultiplier: 1,
-                touchMultiplier: 1.5,
-            });
-            function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-            requestAnimationFrame(raf);
-        }
+        <script>
+            const phrases = [
+                "Baking your story using humanization matrices...",
+                "You know, Marino has only one biological child: Vasilia Wsheena.",
+                "Vasilisa Wsheena has a husband, who is he?",
+                "Kenneth shouldn't be a doctor, wait, who is Kenneth?",
+                "I don't know why Marino married Thalassa, wait, who is this couple?",
+                "Enzio Alveiro my first character, I mean Jhon Alfredo"
+            ];
+            let currentPhraseIndex = 0;
+            const loadingText = document.querySelector('.loading-text-dynamic');
+            
+            setInterval(() => {
+                currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
+                loadingText.textContent = phrases[currentPhraseIndex];
+            }, 4500);
+
+            // Lenis
+            {
+                const lenis = new Lenis({
+                    smooth: !window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+                    duration: 1.2,
+                    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                    wheelMultiplier: 1,
+                    touchMultiplier: 1.5,
+                });
+                function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+                requestAnimationFrame(raf);
+            }
 
         lucide.createIcons();
 
