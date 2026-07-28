@@ -555,7 +555,7 @@ CRITICAL REQUIREMENT (FOR ROLEPLAY ACCEPTANCE):
 4. Output only the story narrative, no chatty introductions, no warnings, no prefix, and no metadata format headers. Just the story.`;
 
             try {
-                const response = await fetch('http://ip.atlantic-server.com:27028/api/generate-cs', {
+                const response = await fetch('https://cs-api.vitalwounds.my.id/api/generate-cs', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ prompt })
